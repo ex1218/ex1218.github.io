@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>傲視今天午餐吃什麼?</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDyS-jGwvuVuMAHVKs6NkbNRF31h2_FbiU&callback=initMap" async defer></script>
+</head>
+<body>
+    <h1>今天午餐吃什麼??</h1>
+    <div class=lunchSection>
+<p></p>
+    </div>
+    <button id=gogogo>開始</button>
+    <div id="map"></div>
+</body>
+<script>
+
+function getNum(x){
+        return Math.floor(Math.random()*x)+1;
+    }
+
+ var map;
+    function initMap(){
+        map = new google.maps.Map(document.getElementById('map'), {
+        center: {lat: 24.168006, lng: 120.685322},
+        zoom: 17,
+        });
+    }
+    
+$.get('https://spreadsheets.google.com/feeds/list/1ubtGNKkEQ5MhymMLqd0ez5BK48gdt9ZzerEVlu_qMPo/1/public/values?alt=json', function(data) {
+  var d = data.feed.entry;
+  var items = [];
+    for(var i in d) {
+        var item = {};
+        item.num = d[i].gsx$num.$t;
+        item.shop = d[i].gsx$shop.$t;
+        item.lat = d[i].gsx$lat.$t;
+        item.lng = d[i].gsx$lng.$t;
+        items.push(item);
+     }
+  console.table(items);
+  console.log(items[2].shop);
+
+  
+
+  
+     $('#gogogo').click(function(){
+        var num = getNum(20);
+        $('p').text(items[num].shop);
+        var map2 = new initMap()
+        var lating =  new google.maps.LatLng(items[num].lat, items[num].lng)
+        {
+        map = new google.maps.Map(document.getElementById('map'), {
+        center: lating,
+        zoom: 16,
+        });
+
+        var marker = new google.maps.Marker({
+        position: lating,
+        map: map,
+        });
+         marker.setMap(map);
+        }
+       
+     });
+
+});
+
+
+
+ 
+
+</script>
+<style>
+    h1{
+        color:red;     
+    }
+
+    .lunchSection{
+        width: 800px;
+        height: 100px;
+        background-color: lightcyan;
+    }
+
+    #gogogo{
+        font-size: 25px;
+    }
+
+    html, body{
+        width: 80%;
+        height: 80%;
+    }
+    #map{
+        width: 70%;
+        height: 70%;
+    }
+    p{
+        font-size: 70px;
+        display: inline
+    }
+</style>

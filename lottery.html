@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>發大財</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+
+    <h1>威力彩</h1>
+    <h2>第一區</h2>
+    <div class="section1">
+        <a></a>
+        <div id="showSection1"></div>
+    </div>
+    <h2>第二區</h2>
+    <div class="section2">
+        <p></p>
+        <div id="showSection2"></div>
+    </div>
+<br>
+    <button id="gogogo">產生</button>
+    
+</body>
+<script>
+  
+    var num = 0;
+
+    function getNum(x){
+        return Math.floor(Math.random()*x)+1;
+    }
+    console.log(getNum());
+
+    function getSection1Num(){
+        var str = '';
+        var n = 0;
+        var result = [];
+        var finalResult = [];
+
+        while (result.length <= 5) {
+            n = getNum(38);
+            if (result.indexOf(n) === -1) {
+                result.push(n);
+            }
+        }
+        
+        result.join(', ');
+        result.sort(function(a, b){
+            return a - b
+        });
+
+        return result;
+    }
+
+    $('#gogogo').click(function(){
+        $("#showSection2").text(getNum(8));
+        $("a").text(getSection1Num());
+    });
+
+    function checkIfArrayIsUnique(myArray) 
+    {
+        for (var i = 0; i < myArray.length; i++) 
+        {
+            if (myArray.indexOf(myArray[i]) !== myArray.lastIndexOf(myArray[i])) { 
+                return false; 
+            } 
+        } 
+        return true;   // this means not unique
+    }
+    
+    function getUniqueArr(result) {
+        for (var i = 0; i < result.length; i++) {
+
+        }
+    }
+
+</script>
+<style>
+    h1{
+        color:red;
+        font-size: 60px;
+            
+    }
+    h2{
+        color:slategray;
+        font-size: 30px;
+        display: inline;
+    }
+
+    #gogogo{
+        font-size: 25px;
+    }
+    
+    .section1{
+        width: 530px;
+        height:80px;
+        background-color: royalblue;
+        font-size: 70px;
+        display: block;
+    }
+
+    .section2{
+        width: 60px;
+        height:60px;
+        font-size: 50px;
+        text-align: center;
+        background-color: springgreen;
+    }
+
+    #ShowSection1{
+        color:black;
+        font-size: 60px;
+    }
+
+    p{
+        display: inline;
+    }
+
+    a{
+        display: inline;
+    }
+</style>

@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<body>
+    <div class="calculator">
+        <div class="numberprocess">
+            <div id="ShowNumber"></div>
+        </div>
+        <div class="numberresult">
+            <div id="ShowResult"></div>
+        </div>
+     <div class="buttonNumber">
+        <button class="button" onclick="getNum('7')">7</button>
+        <button class="button" onclick="getNum('8')">8</button>
+        <button class="button" onclick="getNum('9')">9</button>
+         
+        <button class="button" onclick="getNum('4')">4</button>
+        <button class="button" onclick="getNum('5')">5</button>
+        <button class="button" onclick="getNum('6')">6</button>
+
+        <button class="button" onclick="getNum('1')">1</button>
+        <button class="button" onclick="getNum('2')">2</button>
+        <button class="button" onclick="getNum('3')">3</button>
+
+        <button class="button" onclick="cal('.')">.</button>
+        <button class="button" onclick="getNum('0')">0</button>
+        <button class="button" onclick="equal()">=</button>
+     </div>
+     
+        <div class="buttonFunction">
+            <button class="buttonCount" onclick="del()">DEL</button>
+            <button class="buttonCount" onclick="cal('/')">÷</button>
+            <button class="buttonCount" onclick="cal('*')">x</button>
+            <button class="buttonCount" onclick="cal('-')">-</button>
+            <button class="buttonCount" onclick="cal('+')">+</button>
+        </div>
+        
+        
+    </div>
+   
+
+
+</body>
+</html>
+<script>
+
+    var result = 0;
+    var showText = '';
+    var hasEqual = false; // 判斷是否已經按過=符號
+
+    $(document).ready(function(){
+        console.log("ready!!");
+    })
+
+    function getNum(num) {
+
+        if (hasEqual) {
+            // 已按過=，舊字串清空重新計算
+            showText = '';
+            $('#ShowResult').text('');
+            $('#ShowNumber').text('');
+            hasEqual = false;
+            $('#ShowResult').removeClass('result');
+            $('#ShowNumber').removeClass('result');
+        }
+
+        // 判斷字數有沒有超過22個字元
+        if (showText.length >= 22) return;
+
+        showText = showText + num;
+        $('#ShowNumber').text(showText);
+    }
+
+    function cal(num){
+
+        if (hasEqual) {
+            // 已按過=，舊字串清空重新計算
+            showText = '';
+            $('#ShowResult').text('');
+            $('#ShowNumber').text('');
+            hasEqual = false;
+            $('#ShowResult').removeClass('result');
+            $('#ShowNumber').removeClass('result');
+        }
+
+        // 判斷字數有沒有超過22個字元
+        if (showText.length >= 22) return;
+
+        // 判斷第一個符號是不是運算符號
+        if (showText.length === 0 && (num === '+' || num === '*' || num === '/')) return;
+
+        // 判斷最後一個符號是不是運算符號
+        var lastChar = showText.substr(showText.length - 1);
+        if (lastChar === '+' || lastChar === '-' || lastChar === '*' || lastChar === '/') {
+            // 是，取代運算符號
+            showText = showText.slice(0, -1) + num;
+            $('#ShowNumber').text(showText);
+        } else {
+            // 否，增加新的運算符號上去
+            showText = showText + num;
+            $('#ShowNumber').text(showText);
+        }
+    }
+
+    function del(){
+
+        if (hasEqual) {
+            // 已按過=，舊字串清空重新計算
+            showText = '';
+            $('#ShowResult').text('');
+            $('#ShowNumber').text('') 
+            $('#ShowResult').removeClass('result');
+            $('#ShowNumber').removeClass('result');
+            hasEqual = false;
+            return;
+        }
+        
+        showText = showText.substr(0,showText.length-1) ;
+
+        var lastChar = showText.substr(showText.length - 1);
+        if (lastChar === '+' || lastChar === '-' || lastChar === '*' || lastChar === '/') {
+            // 如果刪掉數字後，最後一個是計算符號的情況也要一起刪掉
+            showText = showText.substr(0,showText.length-1) ;
+        }
+
+        $('#ShowNumber').text(showText)  
+    }
+
+    function equal(){
+
+        // 判斷最後一個符號是不是運算符號，是就要刪掉，否則會造成運算錯誤
+        var lastChar = showText.substr(showText.length - 1);
+        if (lastChar === '+' || lastChar === '-' || lastChar === '*' || lastChar === '/') {
+            showText = showText.substr(0,showText.length-1);
+            $('#ShowNumber').text(showText);
+        }
+
+        var result = eval(showText);
+        $('#ShowResult').text(result);
+        $('#ShowResult').addClass('result');
+        $('#ShowNumber').addClass('result');
+        hasEqual = true;
+    }
+    
+</script>
+
+<style>
+    .calculator {
+        width: 430px;
+        height: 620px;
+        background-color:rgb(29,233,182);
+        position: relative;
+    }
+    .numberprocess{
+        width:430px;
+        height:120px;
+        background-color: honeydew;
+        position:relative;
+        font-size: 36px;
+        text-align: right;
+        line-height:120px;
+    }
+    .numberresult{
+        width:430px;
+        height: 100px;
+        background-color: lavender;
+        position: relative;
+        font-size: 36px;
+        text-align: right;
+        line-height:100px;
+    }
+    .leftcontainer {
+        width: 100px;
+        height: 100px;
+        background-color: red;
+        line-height: 100px;
+        position: absolute;
+        left:0px;
+        display:inline-block;
+    }
+    .maincontainer{
+        width: 60px;
+        height: 60px;
+        background-color: red;
+        line-height: 60px;
+        position: absolute;
+        left:60px;
+        display:inline-block;
+    }
+    .rightcontainer{
+        width: 60px;
+        height: 60px;
+        background-color: red;
+        line-height: 60px;
+        position: absolute;
+        left:120px;
+        display:inline-block;
+    }    
+    .main {
+        width: 400px;
+        height: 600px;
+        position: absolute;
+        left: 200px;
+        border-color: blue;
+        border-width: 3px;
+        border-style: solid;
+    }
+
+    .main-header {
+        position: absolute;
+        top: 0px;
+        width: 400px;
+        height: 100px;
+        border-color: gray;
+        border-width: 3px;
+        border-style: solid;
+    }
+
+    .main-body {
+        position: absolute;
+        top: 100px;
+        width: 400px;
+        height: 400px;
+        border-color: gray;
+        border-width: 3px;
+        border-style: solid;
+    }
+
+    .main-footer {
+        position: absolute;
+        top: 500px;
+        width: 400px;
+        height: 100px;
+        border-color: gray;
+        border-width: 3px;
+        border-style: solid;
+    }
+    .text{
+        text-align:center;
+        font-size: 40px;
+        color:gold;
+        background-color: silver;
+    }
+    .button{
+        width: 100px;
+        height: 100px;
+        background-color:rgb(67,67,67);
+        color: rgb(226,226,226);
+        text-align:center;
+        font-size: 40px;
+        border: none;
+        position: relative;
+        display: inline-block;
+        line-height: 100px;
+        outline: none;
+    }
+
+    .button:hover {
+        background-color:rgb(114, 114, 114);
+    }
+    .button:active {
+        background-color:rgb(67,67,67);
+    }
+
+    #ShowResult,
+    #ShowNumber {
+        padding: 0px 20px;
+    }
+
+    .result {
+        position: relative;
+        animation-name:resultEffect;
+        animation-duration:1s;
+        animation-fill-mode: forwards;
+    }
+    @keyframes resultEffect{
+        from{
+            top:0px;
+        }
+        to{
+            top:-100px;
+        }
+    }
+    
+    .buttonCount{
+        width: 80px;
+        height: 80px;
+        background-color:rgb(99,99,99);
+        text-align:center;
+        font-size: 40px;
+        color: rgb(226,226,226);
+        border: none;
+        position: relative;
+        line-height: 80px;
+        outline: none;
+    }
+
+    .buttonCount:hover {
+        background-color:rgb(151, 151, 151);
+    }
+    .buttonCount:active {
+        background-color:rgb(99,99,99);
+    }
+
+    .buttonFunction{
+        width: 80px;
+        height: 400px;
+        background-color:blue;
+        position: absolute;
+        left:310px;
+    }
+    .buttonNumber{
+        width: 310px;
+        height: 400px;
+        background-color: rgb(67,67,67);
+        position:absolute;
+    }
+</style>
