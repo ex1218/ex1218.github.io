@@ -28,7 +28,7 @@ function getNum(x){
         });
     }
     
-$.get('https://sheets.googleapis.com/v4/spreadsheets/1ubtGNKkEQ5MhymMLqd0ez5BK48gdt9ZzerEVlu_qMPo/values/lunch?alt=json&key=AIzaSyC3Zm-CUNI3ccTwJIT-2vDUnaaGpoOEGjo', function(data) {
+$.get('https://sheets.googleapis.com/v4/spreadsheets/1ubtGNKkEQ5MhymMLqd0ez5BK48gdt9ZzerEVlu_qMPo/values/lunch?alt=json&key=', function(data) {
   var d = data.feed.entry;
   var items = [];
     for(var i in d) {
