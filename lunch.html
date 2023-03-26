@@ -1,101 +1,73 @@
 <!DOCTYPE html>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>今天午餐吃什麼?</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDyS-jGwvuVuMAHVKs6NkbNRF31h2_FbiU&callback=initMap" async defer></script>
 </head>
+
 <body>
     <h1>今天午餐吃什麼??</h1>
     <div class=lunchSection>
-<p></p>
+        <p></p>
     </div>
+    </br>
     <button id=gogogo>開始</button>
-    <div id="map"></div>
+    </br>
+    <div width="800" height="650">
+        </br>
+        <iframe id="map" src="" width="800" height="650" style="border:0;" allowfullscreen="" loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
 </body>
 <script>
 
-function getNum(x){
-        return Math.floor(Math.random()*x)+1;
+    function getNum(x) {
+        return Math.floor(Math.random() * x) + 1;
     }
 
- var map;
-    function initMap(){
-        map = new google.maps.Map(document.getElementById('map'), {
-        center: {lat: 24.168006, lng: 120.685322},
-        zoom: 17,
-        });
-    }
-    
-$.get('https://spreadsheets.google.com/feeds/list/1ubtGNKkEQ5MhymMLqd0ez5BK48gdt9ZzerEVlu_qMPo/1/public/values?alt=json', function(data) {
-  var d = data.feed.entry;
-  var items = [];
-    for(var i in d) {
-        var item = {};
-        item.num = d[i].gsx$num.$t;
-        item.shop = d[i].gsx$shop.$t;
-        item.lat = d[i].gsx$lat.$t;
-        item.lng = d[i].gsx$lng.$t;
-        items.push(item);
-     }
-  console.table(items);
-  console.log(items[2].shop);
-
-  
-
-  
-     $('#gogogo').click(function(){
-        var num = getNum(20);
-        $('p').text(items[num].shop);
-        var map2 = new initMap()
-        var lating =  new google.maps.LatLng(items[num].lat, items[num].lng)
-        {
-        map = new google.maps.Map(document.getElementById('map'), {
-        center: lating,
-        zoom: 16,
-        });
-
-        var marker = new google.maps.Marker({
-        position: lating,
-        map: map,
-        });
-         marker.setMap(map);
+    $.get('https://sheets.googleapis.com/v4/spreadsheets/16xFwDpWiSWdsiqWVd4ip-awLdsLMvth8emw30Dbv4xY/values/工作表1?alt=json&key=AIzaSyATz3xn9-KwJD82HqfHL3kBPrzLoK-AJMA', function (data) {
+        var d = data.values;
+        var items = [];
+        for (var i = 1; i < d.length; i++) {
+            var item = {};
+            item.num = d[i][0];
+            item.shop = d[i][1];
+            item.embid = d[i][2];
+            items.push(item);
         }
-       
-     });
 
-});
-
-
-
- 
-
+        $('#gogogo').click(function () {
+            var num = getNum(20);
+            $('p').text(items[num].shop);
+            var map = $('#map');
+            map.attr("src", items[num].embid);
+        });
+    });
 </script>
 <style>
-    h1{
-        color:red;     
+    h1 {
+        color: red;
     }
 
-    .lunchSection{
+    .lunchSection {
         width: 800px;
         height: 100px;
         background-color: lightcyan;
     }
 
-    #gogogo{
+    #gogogo {
         font-size: 25px;
     }
 
-    html, body{
+    html,
+    body {
         width: 80%;
         height: 80%;
     }
-    #map{
-        width: 70%;
-        height: 70%;
-    }
-    p{
+
+    p {
         font-size: 70px;
         display: inline
     }
